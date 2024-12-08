@@ -1,3 +1,7 @@
+using Microsoft.EntityFrameworkCore;
+using WordStream.web.Data;
+using WordStream.web.Repositories;
+
 namespace WordStream.web
 {
     public class Program
@@ -8,6 +12,12 @@ namespace WordStream.web
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            //Inject DbContext in Application
+            builder.Services.AddDbContext<WordStreamDbContext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("WordStreamDbConnectionString")));
+
+            builder.Services.AddScoped<ITagRepository, TagRepository>();
 
             var app = builder.Build();
 

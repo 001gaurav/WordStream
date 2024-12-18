@@ -18,6 +18,7 @@ namespace WordStream.web
             options.UseSqlServer(builder.Configuration.GetConnectionString("WordStreamDbConnectionString")));
 
             builder.Services.AddScoped<ITagRepository, TagRepository>();
+            builder.Services.AddScoped<IBlogPostRepository, BlogPostRepository>();
 
             var app = builder.Build();
 

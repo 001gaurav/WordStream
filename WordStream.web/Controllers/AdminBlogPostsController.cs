@@ -166,7 +166,7 @@ namespace WordStream.web.Controllers
             {
                 return RedirectToAction("List");
             }
-            return RedirectToAction("List", new {editBlogPostRequest.Id} );
+            return RedirectToAction("Edit", new {Id = editBlogPostRequest.Id} );
         }
     }
 }

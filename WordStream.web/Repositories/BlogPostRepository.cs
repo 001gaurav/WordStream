@@ -21,7 +21,7 @@ namespace WordStream.web.Repositories
 
         public async Task<BlogPost?> DeleteAsync(Guid id)
         {
-           var deleteBlog = await wordStreamDbContext.BlogPosts.FindAsync(id);
+            var deleteBlog = await wordStreamDbContext.BlogPosts.FindAsync(id);
             if (deleteBlog != null)
             {
                 wordStreamDbContext.BlogPosts.Remove(deleteBlog);
@@ -40,6 +40,11 @@ namespace WordStream.web.Repositories
         public async Task<BlogPost?> GetAsync(Guid id)
         {
             return await wordStreamDbContext.BlogPosts.Include(x => x.Tags).FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<BlogPost?> GetByUrlHandleAsync(string urlHandle)
+        {
+            return await wordStreamDbContext.BlogPosts.Include(x => x.Tags).FirstOrDefaultAsync(x => x.UrlHandle == urlHandle);
         }
 
         public async Task<BlogPost?> UpdateAsync(BlogPost blogPost)

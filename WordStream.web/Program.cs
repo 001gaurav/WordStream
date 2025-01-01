@@ -21,6 +21,8 @@ namespace WordStream.web
             builder.Services.AddScoped<IBlogPostRepository, BlogPostRepository>();
             builder.Services.AddScoped<IImageRepository, CloudinaryImageRepository>();
 
+            Console.WriteLine("New ID"+Guid.NewGuid());
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

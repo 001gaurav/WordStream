@@ -92,6 +92,7 @@ namespace WordStream.web.Data
             };
 
             builder.Entity<IdentityUserRole<string>>().HasData(superAdminRoles);
+            
 
 
         }

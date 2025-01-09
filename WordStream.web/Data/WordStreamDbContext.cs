@@ -5,7 +5,7 @@ namespace WordStream.web.Data
 {
     public class WordStreamDbContext : DbContext
     {
-        public WordStreamDbContext(DbContextOptions options) : base(options)
+        public WordStreamDbContext(DbContextOptions<WordStreamDbContext> options) : base(options)
         {
         }
 

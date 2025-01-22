@@ -1,6 +1,8 @@
-﻿namespace WordStream.web.Models.Domain
+﻿using WordStream.web.Models.Domain;
+
+namespace WordStream.web.Models.ViewModels
 {
-    public class BlogPost
+    public class BlogDetailViewModel
     {
         public Guid Id { get; set; }
         public string Heading { get; set; }
@@ -14,6 +16,8 @@
         public bool visible { get; set; }
         public ICollection<Tag> Tags { get; set; }
 
-        public ICollection<BlogPostLike> Likes { get; set; }
+        public int TotalLikes { get; set; }
+
+        public bool Liked { get; set; }
     }
 }

@@ -3,9 +3,11 @@ using WordStream.web.Repositories;
 using WordStream.web.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using WordStream.web.Models.Domain;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WordStream.web.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminBlogPostsController : Controller
     {
         private readonly ITagRepository tagRepository;

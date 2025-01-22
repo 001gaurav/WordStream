@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WordStream.web.Data;
 using WordStream.web.Models.Domain;
@@ -7,6 +8,7 @@ using WordStream.web.Repositories;
 
 namespace WordStream.web.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminTagController : Controller
     {
         private readonly ITagRepository tagRepository;
@@ -15,6 +17,8 @@ namespace WordStream.web.Controllers
         {
             this.tagRepository = tagRepository;
         }
+
+        [HttpGet]
         public IActionResult Add()
         {
             return View();

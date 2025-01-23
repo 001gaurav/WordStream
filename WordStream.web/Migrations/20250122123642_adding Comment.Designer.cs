@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WordStream.web.Data;
 
@@ -11,9 +12,11 @@ using WordStream.web.Data;
 namespace WordStream.web.Migrations
 {
     [DbContext(typeof(WordStreamDbContext))]
-    partial class WordStreamDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250122123642_adding Comment")]
+    partial class addingComment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

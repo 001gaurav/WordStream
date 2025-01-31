@@ -39,6 +39,8 @@ namespace WordStream.web
             builder.Services.AddScoped<IImageRepository, CloudinaryImageRepository>();
             builder.Services.AddScoped<IBlogPostLikeRepository, BlogPostLikeRepository>();
             builder.Services.AddScoped<IBlogPostCommentRepository, BlogPostCommentRepository>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
+
             Console.WriteLine("New ID" + Guid.NewGuid());
 
             var app = builder.Build();

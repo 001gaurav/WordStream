@@ -1,4 +1,4 @@
-﻿ using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using WordStream.web.Models.ViewModels;
 
@@ -22,22 +22,26 @@ namespace WordStream.web.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
         {
-            var identityUser = new IdentityUser
+
+            if (ModelState.IsValid)
             {
-                UserName = registerViewModel.Username,
-                Email = registerViewModel.Email
-            };
-
-            var identityResult = await userManager.CreateAsync(identityUser, registerViewModel.Password);
-
-            if (identityResult.Succeeded)
-            {
-                var roleIdentityResult = await userManager.AddToRoleAsync(identityUser, "User");
-
-                if (roleIdentityResult.Succeeded)
+                var identityUser = new IdentityUser
                 {
-                    // Show Success Notification
-                    return RedirectToAction("Register");
+                    UserName = registerViewModel.Username,
+                    Email = registerViewModel.Email
+                };
+
+                var identityResult = await userManager.CreateAsync(identityUser, registerViewModel.Password);
+
+                if (identityResult.Succeeded)
+                {
+                    var roleIdentityResult = await userManager.AddToRoleAsync(identityUser, "User");
+
+                    if (roleIdentityResult.Succeeded)
+                    {
+                        // Show Success Notification
+                        return RedirectToAction("Register");
+                    }
                 }
             }
             // Show error Notification
@@ -48,7 +52,7 @@ namespace WordStream.web.Controllers
         public IActionResult Login(string ReturnUrl)
         {
             var model = new LoginViewModel
-            { 
+            {
                 ReturnUrl = ReturnUrl
             };
             return View(model);
@@ -57,17 +61,22 @@ namespace WordStream.web.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel loginViewModel)
         {
-           var signInResult = await signInManager.PasswordSignInAsync(loginViewModel.Username, loginViewModel.Password, false, false);
-
-            if(signInResult != null && signInResult.Succeeded)
+            if (!ModelState.IsValid)
             {
-                if(!string.IsNullOrWhiteSpace(loginViewModel.ReturnUrl))
-                {
-                    Redirect(loginViewModel.ReturnUrl);
-                }
-
-                return RedirectToAction("Index", "Home");
+                return View();
             }
+
+            var signInResult = await signInManager.PasswordSignInAsync(loginViewModel.Username, loginViewModel.Password, false, false);
+             
+                if (signInResult != null && signInResult.Succeeded)
+                {
+                    if (!string.IsNullOrWhiteSpace(loginViewModel.ReturnUrl))
+                    {
+                        return Redirect(loginViewModel.ReturnUrl);
+                    }
+
+                    return RedirectToAction("Index", "Home");
+                }
             // Show Error Notification
             return View();
         }

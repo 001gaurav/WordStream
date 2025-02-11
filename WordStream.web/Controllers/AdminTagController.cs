@@ -28,6 +28,12 @@ namespace WordStream.web.Controllers
         [ActionName("Add")]
         public async Task<IActionResult> Add(AddTagRequest addTagRequest)
         {
+            ValidateAddTagRequest(addTagRequest);
+            if (ModelState.IsValid == false)
+            {
+                return View();
+            }
+
             // Mapping AddTagRequest to Tag domain model
             var tag = new Tag
             {
@@ -41,9 +47,32 @@ namespace WordStream.web.Controllers
 
         [HttpGet]
         [ActionName("List")]
-        public async Task<IActionResult> List()
+        public async Task<IActionResult> List(string? searchQuery, 
+            string? sortBy, 
+            string? sortDirection,
+            int pageSize = 3,
+            int pageNumber = 1)
         {
-            var tags = await tagRepository.GetAllAsync();
+            var totalRecords = await tagRepository.CountAsync();
+            var totalPages = Math.Ceiling((decimal)totalRecords / pageSize);
+
+            ViewBag.TotalPages = totalPages;
+            ViewBag.SearchQuery = searchQuery;
+            ViewBag.SortBy = sortBy;
+            ViewBag.SortDirection = sortDirection;
+            ViewBag.PageSize = pageSize;
+            ViewBag.PageNumber = pageNumber;
+
+            if(pageNumber > totalPages)
+            {
+                pageNumber--;
+            }
+            if(pageNumber < 1)
+            {
+                pageNumber++;
+            }
+
+            var tags = await tagRepository.GetAllAsync(searchQuery, sortBy, sortDirection, pageSize, pageNumber);
 
             return View(tags);
 
@@ -85,7 +114,7 @@ namespace WordStream.web.Controllers
             {
             }
             else
-            { 
+            {
             }
             return RedirectToAction("Edit", new { id = editTagRequest.Id });
         }
@@ -103,5 +132,16 @@ namespace WordStream.web.Controllers
             return RedirectToAction("List", new { editTagRequest.Id });
         }
 
+        private void ValidateAddTagRequest(AddTagRequest request)
+        {
+            if (request.Name is not null && request.DisplayName is not null)
+            {
+                if (request.Name == request.DisplayName)
+                {
+                    ModelState.AddModelError("DisplayName", "Name cannot be same as DisplayName");
+                }
+            }
+
+        }
     }
 }
